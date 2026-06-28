@@ -164,7 +164,7 @@ const Index = () => {
       {/* HEADER */}
       <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border/60">
         <div className="container flex items-center justify-between h-16">
-          <a href="#" className="font-display text-2xl font-semibold tracking-mega">ОБИТЕЛЬ</a>
+          <a href="#" className="font-display text-2xl font-semibold tracking-mega">НОВЫЙ ДОМ</a>
           <nav className="hidden lg:flex items-center gap-8 text-sm text-muted-foreground">
             {NAV.map((n) => (
               <a key={n.href} href={n.href} className="hover:text-foreground transition-colors">{n.label}</a>
@@ -487,7 +487,7 @@ const Index = () => {
       {/* FOOTER */}
       <footer className="border-t border-border py-10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span className="font-display text-xl tracking-mega text-foreground">ОБИТЕЛЬ</span>
+          <span className="font-display text-xl tracking-mega text-foreground">НОВЫЙ ДОМ</span>
           <span>© 2026 Модульные дома под ключ</span>
         </div>
       </footer>
