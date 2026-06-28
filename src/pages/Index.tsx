@@ -6,12 +6,12 @@ import func2url from '../../backend/func2url.json';
 
 const LEAD_URL = func2url['send-lead'];
 
-const IMG_HERO = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/65e80b4b-225d-4f91-b054-88aede9c839f.jpg';
-const IMG_FOREST = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/5cd8cecb-8835-4cf0-ab1e-75d322c3de71.jpg';
-const IMG_INTERIOR = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/361308bf-6a94-4b3d-bfdd-73eb025c5bd4.jpg';
-const IMG_DECK = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/ab79276c-ee8f-476d-b5f4-a82bdd9e0c7c.jpg';
-const IMG_BLACK = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/2016ce09-46b2-4da0-9f72-fe1f0fd9ad7c.jpg';
-const IMG_VILLA = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/a501c18c-a247-4c71-98b5-b41835cff43b.jpg';
+const IMG_HERO = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/bucket/8199682b-339b-4ba6-9495-5fc2f0ff9108.jpeg';
+const IMG_FOREST = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/bucket/ef515bd1-2016-4d31-8db3-da23d32ed95a.jpeg';
+const IMG_INTERIOR = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/bucket/90341acb-5a2a-4717-be5c-ecec04b114ba.jpeg';
+const IMG_DECK = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/bucket/729bea55-8547-407d-9164-b7a3da595ea4.jpeg';
+const IMG_BLACK = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/bucket/d11052c8-8c96-4341-ab42-4dc70c739b63.jpeg';
+const IMG_VILLA = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/bucket/8199682b-339b-4ba6-9495-5fc2f0ff9108.jpeg';
 
 const NAV = [
   { label: 'Проекты', href: '#projects' },
