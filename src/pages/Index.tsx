@@ -467,8 +467,8 @@ const Index = () => {
               <a href="tel:+79114896920" className="flex items-center gap-4 hover:text-white transition-colors">
                 <Icon name="Phone" size={20} /> +7 (911) 489-69-20
               </a>
-              <a href="mailto:hello@obitel.ru" className="flex items-center gap-4 hover:text-white transition-colors">
-                <Icon name="Mail" size={20} /> hello@obitel.ru
+              <a href="mailto:ndom39@mail.ru" className="flex items-center gap-4 hover:text-white transition-colors">
+                <Icon name="Mail" size={20} /> ndom39@mail.ru
               </a>
               <div className="flex items-center gap-4">
                 <Icon name="MapPin" size={20} /> Москва, шоссе Энтузиастов, 31
