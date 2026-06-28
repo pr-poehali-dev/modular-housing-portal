@@ -44,6 +44,13 @@ const GALLERY = [
   { src: IMG_VILLA, label: 'Вилла ПРЕМИУМ, 120 м²' },
 ];
 
+const PRESETS = [
+  { name: 'НОРД', area: 36, floors: 1, finish: 'shell', opts: [], img: IMG_FOREST, desc: 'Компактный · 36 м²' },
+  { name: 'ФЬОРД', area: 64, floors: 1, finish: 'comfort', opts: ['terrace'], img: IMG_HERO, desc: 'Семейный · 64 м²' },
+  { name: 'ХЮГГЕ', area: 88, floors: 2, finish: 'comfort', opts: ['terrace', 'panoramic'], img: IMG_INTERIOR, desc: 'Просторный · 88 м²' },
+  { name: 'ВИЛЛА', area: 120, floors: 2, finish: 'premium', opts: ['terrace', 'panoramic', 'smart', 'furniture'], img: IMG_VILLA, desc: 'Премиум · 120 м²' },
+];
+
 const FINISHES = [
   { id: 'shell', label: 'Тёплый контур', price: 45000 },
   { id: 'comfort', label: 'Комфорт', price: 62000 },
@@ -276,6 +283,33 @@ const Index = () => {
             </div>
 
             <div className="space-y-10">
+              {/* presets */}
+              <div>
+                <div className="font-display text-2xl mb-4">Выберите проект</div>
+                <div className="grid grid-cols-2 gap-3">
+                  {PRESETS.map((p) => {
+                    const isActive = area === p.area && floors === p.floors && finish === p.finish;
+                    return (
+                      <button key={p.name} onClick={() => { setArea(p.area); setFloors(p.floors); setFinish(p.finish); setOpts(p.opts); }}
+                        className={`relative overflow-hidden text-left transition-all duration-300 group border ${isActive ? 'border-foreground' : 'border-border hover:border-foreground/40'}`}>
+                        <img src={p.img} alt={p.name} className="w-full h-24 object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className={`absolute inset-0 transition-colors duration-300 ${isActive ? 'bg-black/50' : 'bg-black/30 group-hover:bg-black/40'}`} />
+                        <div className="absolute inset-0 flex flex-col justify-end p-3">
+                          <div className="text-white font-display text-lg leading-none">{p.name}</div>
+                          <div className="text-white/70 text-xs mt-1">{p.desc}</div>
+                        </div>
+                        {isActive && (
+                          <div className="absolute top-2 right-2 bg-white rounded-full p-0.5">
+                            <Icon name="Check" size={12} className="text-black" />
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-muted-foreground mt-3">Параметры ниже настраиваются независимо от проекта</p>
+              </div>
+
               {/* area */}
               <div>
                 <div className="flex justify-between items-baseline mb-4">
