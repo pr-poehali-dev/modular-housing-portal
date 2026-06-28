@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -9,6 +9,9 @@ const LEAD_URL = func2url['send-lead'];
 const IMG_HERO = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/65e80b4b-225d-4f91-b054-88aede9c839f.jpg';
 const IMG_FOREST = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/5cd8cecb-8835-4cf0-ab1e-75d322c3de71.jpg';
 const IMG_INTERIOR = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/361308bf-6a94-4b3d-bfdd-73eb025c5bd4.jpg';
+const IMG_DECK = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/ab79276c-ee8f-476d-b5f4-a82bdd9e0c7c.jpg';
+const IMG_BLACK = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/2016ce09-46b2-4da0-9f72-fe1f0fd9ad7c.jpg';
+const IMG_VILLA = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/a501c18c-a247-4c71-98b5-b41835cff43b.jpg';
 
 const NAV = [
   { label: 'Проекты', href: '#projects' },
@@ -32,7 +35,14 @@ const SERVICES = [
   { icon: 'KeyRound', title: 'Сдача под ключ', text: 'Отделка, инженерия и мебель — въезжайте сразу' },
 ];
 
-const GALLERY = [IMG_HERO, IMG_FOREST, IMG_INTERIOR, IMG_FOREST, IMG_INTERIOR, IMG_HERO];
+const GALLERY = [
+  { src: IMG_HERO, label: 'Дом ФЬОРД, 64 м²' },
+  { src: IMG_FOREST, label: 'Дом НОРД, 36 м²' },
+  { src: IMG_INTERIOR, label: 'Интерьер ХЮГГЕ' },
+  { src: IMG_DECK, label: 'Дом с террасой, 72 м²' },
+  { src: IMG_BLACK, label: 'Горный дом, 48 м²' },
+  { src: IMG_VILLA, label: 'Вилла ПРЕМИУМ, 120 м²' },
+];
 
 const FINISHES = [
   { id: 'shell', label: 'Тёплый контур', price: 45000 },
@@ -58,6 +68,22 @@ const Index = () => {
 
   const [form, setForm] = useState({ name: '', phone: '', comment: '' });
   const [sending, setSending] = useState(false);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const closeLightbox = () => setLightbox(null);
+  const prevPhoto = () => setLightbox((i) => (i === null ? 0 : (i - 1 + GALLERY.length) % GALLERY.length));
+  const nextPhoto = () => setLightbox((i) => (i === null ? 0 : (i + 1) % GALLERY.length));
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (lightbox === null) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevPhoto();
+      if (e.key === 'ArrowRight') nextPhoto();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [lightbox]);
 
   const total = useMemo(() => {
     const f = FINISHES.find((x) => x.id === finish)!;
@@ -325,14 +351,53 @@ const Index = () => {
           <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Галерея</p>
           <h2 className="font-display text-4xl md:text-6xl mb-14">Реализованные дома</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {GALLERY.map((src, i) => (
-              <div key={i} className={`overflow-hidden group ${i === 0 ? 'col-span-2 row-span-2' : ''}`}>
-                <img src={src} alt={`Дом ${i + 1}`} className="w-full h-full object-cover aspect-square transition-transform duration-700 group-hover:scale-105" />
-              </div>
+            {GALLERY.map((item, i) => (
+              <button key={i} onClick={() => setLightbox(i)}
+                className="overflow-hidden group relative aspect-square block w-full focus:outline-none">
+                <img src={item.src} alt={item.label}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-end p-4">
+                  <span className="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0 transition-transform">{item.label}</span>
+                </div>
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-1.5">
+                  <Icon name="Maximize2" size={14} className="text-white" />
+                </div>
+              </button>
             ))}
           </div>
         </div>
       </section>
+
+      {/* LIGHTBOX */}
+      {lightbox !== null && (
+        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+          onClick={closeLightbox}>
+          <button onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2">
+            <Icon name="ChevronLeft" size={40} />
+          </button>
+          <div className="relative max-w-5xl max-h-[90vh] w-full mx-16 flex flex-col items-center gap-4"
+            onClick={(e) => e.stopPropagation()}>
+            <img src={GALLERY[lightbox].src} alt={GALLERY[lightbox].label}
+              className="max-h-[80vh] w-auto max-w-full object-contain" />
+            <p className="text-white/60 text-sm tracking-widest uppercase">{GALLERY[lightbox].label}</p>
+            <div className="flex gap-2 mt-1">
+              {GALLERY.map((_, i) => (
+                <button key={i} onClick={() => setLightbox(i)}
+                  className={`w-2 h-2 rounded-full transition-colors ${i === lightbox ? 'bg-white' : 'bg-white/30'}`} />
+              ))}
+            </div>
+          </div>
+          <button onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2">
+            <Icon name="ChevronRight" size={40} />
+          </button>
+          <button onClick={closeLightbox}
+            className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-2">
+            <Icon name="X" size={28} />
+          </button>
+        </div>
+      )}
 
       {/* ABOUT */}
       <section id="about" className="py-24 md:py-32">
