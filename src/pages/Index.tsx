@@ -471,7 +471,7 @@ const Index = () => {
                 <Icon name="Mail" size={20} /> ndom39@mail.ru
               </a>
               <div className="flex items-center gap-4">
-                <Icon name="MapPin" size={20} /> Москва, шоссе Энтузиастов, 31
+                <Icon name="MapPin" size={20} /> Калининград, ул. Сергеева 14, офис 328
               </div>
             </div>
           </div>
