@@ -1,6 +1,10 @@
 import { useState, useMemo } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import func2url from '../../backend/func2url.json';
+
+const LEAD_URL = func2url['send-lead'];
 
 const IMG_HERO = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/65e80b4b-225d-4f91-b054-88aede9c839f.jpg';
 const IMG_FOREST = 'https://cdn.poehali.dev/projects/c099291d-a9d9-4a9c-a7b2-910285c45bb3/files/5cd8cecb-8835-4cf0-ab1e-75d322c3de71.jpg';
@@ -46,10 +50,14 @@ const OPTIONS = [
 const formatPrice = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
 
 const Index = () => {
+  const { toast } = useToast();
   const [area, setArea] = useState(64);
   const [floors, setFloors] = useState(1);
   const [finish, setFinish] = useState('comfort');
   const [opts, setOpts] = useState<string[]>(['terrace']);
+
+  const [form, setForm] = useState({ name: '', phone: '', comment: '' });
+  const [sending, setSending] = useState(false);
 
   const total = useMemo(() => {
     const f = FINISHES.find((x) => x.id === finish)!;
@@ -60,6 +68,63 @@ const Index = () => {
 
   const toggleOpt = (id: string) =>
     setOpts((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+
+  const sendLead = async (payload: Record<string, unknown>) => {
+    const res = await fetch(LEAD_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || 'Не удалось отправить заявку');
+    }
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.phone.trim()) {
+      toast({ title: 'Заполните имя и телефон', variant: 'destructive' });
+      return;
+    }
+    setSending(true);
+    try {
+      await sendLead({ ...form, source: 'Форма контактов' });
+      toast({ title: 'Заявка отправлена!', description: 'Мы свяжемся с вами в ближайшее время.' });
+      setForm({ name: '', phone: '', comment: '' });
+    } catch (err) {
+      toast({ title: 'Ошибка', description: (err as Error).message, variant: 'destructive' });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleCalcSubmit = async () => {
+    const name = window.prompt('Ваше имя:');
+    if (!name) return;
+    const phone = window.prompt('Ваш телефон:');
+    if (!phone) return;
+    setSending(true);
+    try {
+      await sendLead({
+        name,
+        phone,
+        source: 'Калькулятор',
+        calc: {
+          area: `${area} м²`,
+          floors: floors === 2 ? '2 этажа' : '1 этаж',
+          finish: FINISHES.find((x) => x.id === finish)?.label,
+          options: OPTIONS.filter((o) => opts.includes(o.id)).map((o) => o.label).join(', ') || '—',
+          total: formatPrice(total),
+        },
+      });
+      toast({ title: 'Заявка отправлена!', description: 'Менеджер рассчитает точную стоимость и свяжется с вами.' });
+    } catch (err) {
+      toast({ title: 'Ошибка', description: (err as Error).message, variant: 'destructive' });
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
@@ -178,8 +243,8 @@ const Index = () => {
               <div className="border border-foreground p-8 bg-foreground text-primary-foreground">
                 <div className="text-sm uppercase tracking-widest text-primary-foreground/60">Предварительная стоимость</div>
                 <div className="font-display text-5xl md:text-6xl font-semibold mt-3">{formatPrice(total)}</div>
-                <Button asChild size="lg" className="mt-8 w-full rounded-none bg-white text-black hover:bg-white/90">
-                  <a href="#contacts">Получить точный расчёт</a>
+                <Button onClick={handleCalcSubmit} disabled={sending} size="lg" className="mt-8 w-full rounded-none bg-white text-black hover:bg-white/90">
+                  {sending ? 'Отправка…' : 'Получить точный расчёт'}
                 </Button>
               </div>
             </div>
@@ -311,11 +376,11 @@ const Index = () => {
               </div>
             </div>
           </div>
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <input placeholder="Ваше имя" className="w-full bg-transparent border border-white/20 px-4 py-4 placeholder:text-white/40 focus:border-white outline-none transition-colors" />
-            <input placeholder="Телефон" className="w-full bg-transparent border border-white/20 px-4 py-4 placeholder:text-white/40 focus:border-white outline-none transition-colors" />
-            <textarea placeholder="Комментарий" rows={4} className="w-full bg-transparent border border-white/20 px-4 py-4 placeholder:text-white/40 focus:border-white outline-none transition-colors resize-none" />
-            <Button type="submit" size="lg" className="w-full rounded-none bg-white text-black hover:bg-white/90">Отправить заявку</Button>
+          <form className="space-y-4" onSubmit={handleFormSubmit}>
+            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Ваше имя" className="w-full bg-transparent border border-white/20 px-4 py-4 placeholder:text-white/40 focus:border-white outline-none transition-colors" />
+            <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Телефон" className="w-full bg-transparent border border-white/20 px-4 py-4 placeholder:text-white/40 focus:border-white outline-none transition-colors" />
+            <textarea value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Комментарий" rows={4} className="w-full bg-transparent border border-white/20 px-4 py-4 placeholder:text-white/40 focus:border-white outline-none transition-colors resize-none" />
+            <Button type="submit" disabled={sending} size="lg" className="w-full rounded-none bg-white text-black hover:bg-white/90">{sending ? 'Отправка…' : 'Отправить заявку'}</Button>
           </form>
         </div>
       </section>
