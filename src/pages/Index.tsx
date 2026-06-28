@@ -186,7 +186,7 @@ const Index = () => {
             Дом, в котором живёт тишина
           </h1>
           <p className="mt-8 max-w-md text-white/80 text-lg animate-fade-up reveal-delay-3">
-            Современная архитектура и заводское качество. От проекта до новоселья — 60 дней.
+            Модульные дома привлекают доступной стоимостью и быстрым строительством. От проекта до новоселья — 60 дней.
           </p>
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up reveal-delay-4">
             <Button asChild size="lg" className="rounded-none bg-white text-black hover:bg-white/90">
@@ -443,7 +443,7 @@ const Index = () => {
             <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">О компании</p>
             <h2 className="font-display text-4xl md:text-6xl mb-6 leading-tight">Мы строим дома, которые остаются с вами</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              С 2014 года мы проектируем и собираем модульные дома, в которых хочется жить. Заводское производство гарантирует точность, а минималистичная архитектура — вне моды и времени.
+              С 2014 года мы проектируем и строим модульные дома. Их главное преимущество — доступная стоимость без потери качества. Заводское производство гарантирует точность и скорость сборки.
             </p>
             <div className="grid grid-cols-3 gap-6 mt-10">
               {[{ n: '2014', l: 'год основания' }, { n: '38', l: 'человек в команде' }, { n: '4', l: 'региона работы' }].map((s) => (
