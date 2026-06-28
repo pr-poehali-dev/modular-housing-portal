@@ -23,9 +23,9 @@ const NAV = [
 ];
 
 const PROJECTS = [
-  { name: 'НОРД', area: 36, price: 'от 1 890 000 ₽', img: IMG_FOREST, desc: 'Компактный дом для двоих' },
-  { name: 'ФЬОРД', area: 64, price: 'от 3 240 000 ₽', img: IMG_HERO, desc: 'Семейный дом с террасой' },
-  { name: 'ХЮГГЕ', area: 88, price: 'от 4 560 000 ₽', img: IMG_INTERIOR, desc: 'Просторный дом с панорамой' },
+  { name: 'НОРД', area: 36, price: 'от 2 088 000 ₽', img: IMG_FOREST, desc: 'Компактный дом для двоих' },
+  { name: 'ФЬОРД', area: 64, price: 'от 4 480 000 ₽', img: IMG_HERO, desc: 'Семейный дом с террасой' },
+  { name: 'ХЮГГЕ', area: 88, price: 'от 6 160 000 ₽', img: IMG_INTERIOR, desc: 'Просторный дом с панорамой' },
 ];
 
 const SERVICES = [
@@ -52,9 +52,9 @@ const PRESETS = [
 ];
 
 const FINISHES = [
-  { id: 'shell', label: 'Тёплый контур', price: 45000 },
-  { id: 'comfort', label: 'Комфорт', price: 62000 },
-  { id: 'premium', label: 'Премиум', price: 85000 },
+  { id: 'shell', label: 'Тёплый контур', price: 58000 },
+  { id: 'comfort', label: 'Комфорт', price: 70000 },
+  { id: 'premium', label: 'Премиум', price: 89000 },
 ];
 
 const OPTIONS = [
